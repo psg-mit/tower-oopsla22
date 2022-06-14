@@ -1,0 +1,20 @@
+fun len_helper[n](xs: ptr<list>, acc: uint) -> uint {
+    with {
+        let xs_null <- xs == null;
+    } do if xs_null {
+        let out <- acc;
+    } else with {
+        let temp <- default<list>;
+        *xs <-> temp;
+        let next <- temp.2;
+        let r <- acc + 1;
+    } do {
+        let out <- len_helper[n-1](next, r);
+    }
+    return out;
+}
+
+fun len[n](xs: ptr<list>) -> uint {
+    let out <- len_helper[n](xs, 0);
+    return out;
+}

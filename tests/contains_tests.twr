@@ -1,0 +1,23 @@
+fun main() -> unit {
+    with {
+        let l <- null;
+    } do {
+        let () <- push_front(l, 3);
+        let () <- push_front(l, 5);
+        let () <- push_front(l, 7);
+        let true <- contains[10](l, 5);
+        let true <- contains[10](l, 7);
+        let true <- contains[10](l, 5);
+        let true <- contains[10](l, 3);
+        let false <- contains[10](l, 6);
+        let true <- contains[10](l, 5);
+        let true <- contains[10](l, 7);
+        let false <- contains[10](l, 0);
+        let true <- contains[10](l, 5);
+        let true <- contains[10](l, 3);
+        let 7 <- pop_front(l);
+        let 5 <- pop_front(l);
+        let 3 <- pop_front(l);
+    }
+    return ();
+}

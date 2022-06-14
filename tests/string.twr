@@ -1,0 +1,120 @@
+type string = (uint, ptr<bool>);
+
+fun empty() -> string {
+    return (0, null);
+}
+
+fun is_empty(s: string) -> bool {
+    let out <- s.1 == 0;
+    return out;
+}
+
+fun len(s: string) -> uint {
+    let out <- s.1;
+    return out;
+}
+
+fun prefix(s: string, len: uint) -> string {
+    let out <- (len, s.2);
+    return out;
+}
+
+/* Return a substring of s starting at start */
+fun substring(s: string, start: uint) -> string {
+    let out <- (s.1 - start, s.2 + start);
+    return out;
+}
+
+fun get(s: string, i: uint) -> bool {
+    with {
+        let b <- false;
+        *(s.2 + i) <-> b;
+    } do {
+        let out <- b;
+    }
+    return out;
+}
+
+fun is_prefix_helper[n](s1: string, s2: string, i: uint) -> bool {
+    with {
+        let end <- s1.1 == i;
+    } do if end {
+        /* If we have reached the end of s1, we are done */
+        let out <- true;
+    } else with {
+        /* Does s1[i] == s2[i]? */
+        let b1 <- get(s1, i);
+        let b2 <- get(s2, i);
+        let eq <- b1 == b2;
+        let j <- i + 1;
+    } do if eq {
+        /* If so, keep going */
+        let out <- is_prefix_helper[n-1](s1, s2, j);
+    } else {
+        /* Otherwise, return false */
+        let out <- false;
+    }
+    return out;
+}
+
+/* Return whether s1 is a prefix of s2. Requires len(s1) <= len(s2). */
+fun is_prefix[n](s1: string, s2: string) -> bool {
+    let out <- is_prefix_helper[n](s1, s2, 0);
+    return out;
+}
+
+fun num_matching_helper[n](s1: string, s2: string, i: uint) -> uint {
+    with {
+        let j <- i + 1;
+        let exceeds <- j == s1.1 || j == s2.1;
+    } do if exceeds {
+        /* Reached end */
+        let out <- i + 1;
+    } else with {
+        /* Check a character */
+        let b1 <- get(s1, j);
+        let b2 <- get(s2, j);
+        let eq <- b1 == b2;
+    } do if eq {
+        let out <- num_matching_helper[n-1](s1, s2, j);
+    } else {
+        /* This is final matching character */
+        let out <- i + 1;
+    }
+    return out;
+}
+
+/* Return the number of characters in the matching prefix of s1 and s2 */
+fun num_matching[n](s1: string, s2: string) -> uint {
+    with {
+        /* If either empty, return 0 */
+        let empty <- s1.1 == 0 || s2.1 == 0;
+    } do if empty {
+        let out <- 0;
+    } else with {
+        /* If first char does not match, return 0 */
+        let b1 <- get(s1, 0);
+        let b2 <- get(s2, 0);
+        let eq <- b1 == b2;
+    } do if eq {
+        /* Check remainder */
+        let out <- num_matching_helper[n](s1, s2, 0);
+    } else {
+        let out <- 0;
+    }
+    return out;
+}
+
+fun string_equal[n](s1: string, s2: string) -> bool {
+    with {
+        let p <- is_prefix[n](s1, s2);
+    } do {
+        let out <- p && s1.1 == s2.1;
+    }
+    return out;
+}
+
+fun to_str(n: uint, k: ptr<bool>) -> string {
+    let out <- (n, k);
+    return out;
+}

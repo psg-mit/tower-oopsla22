@@ -1,0 +1,41 @@
+static t: ptr<chain>[8];
+
+fun main() -> unit {
+    let false <- contains[10](t, 15);
+    let null <- add[10](t, 15, 3);
+    let r <- add[10](t, 15, 4);
+    let s <- 0;
+    *r <-> s;
+    let r -> alloc<uint>;
+    let s -> 3;
+    let true <- contains[10](t, 15);
+    let null <- add[10](t, 14, 5);
+    let r <- add[10](t, 14, 6);
+    let s <- 0;
+    *r <-> s;
+    let r -> alloc<uint>;
+    let s -> 5;
+    let null <- add[10](t, 23, 3);
+    let r <- add[10](t, 15, 5);
+    let s <- 0;
+    *r <-> s;
+    let r -> alloc<uint>;
+    let s -> 4;
+    let r <- add[10](t, 23, 7);
+    let s <- 0;
+    *r <-> s;
+    let r -> alloc<uint>;
+    let s -> 3;
+    let true <- contains[10](t, 15);
+    let true <- contains[10](t, 14);
+    let true <- contains[10](t, 23);
+    let null -> add[10](t, 14, 6);
+    /* Must deallocate in this order. */
+    let null -> add[10](t, 23, 7);
+    let null -> add[10](t, 15, 5);
+    /* An attempt to deallocate in the wrong order fails:
+    let null -> add[10](t, 15, 5);
+    let null -> add[10](t, 23, 7);
+    */
+    return ();
+}

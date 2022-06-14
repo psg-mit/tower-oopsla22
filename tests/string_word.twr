@@ -1,0 +1,185 @@
+type string = (uint, uint);
+
+fun empty() -> string {
+    return default<string>;
+}
+
+fun is_empty(s: string) -> bool {
+    let out <- s.1 == 0;
+    return out;
+}
+
+fun len(s: string) -> uint {
+    let out <- s.1;
+    return out;
+}
+
+fun split(s: string, len: uint) -> (string, string) {
+    with {
+        let (l, p) <- s;
+    } do {
+        let (p1, p2) <- word_split(p, len);
+        let l1 <- l - len;
+    }
+    let s2 <- (len, p2);
+    let p2 -> s2.2;
+    let out <- ((l1, p1), s2);
+    let ((l1, p1), s2) -> out;
+    return out;
+}
+
+fun substring(s: string, len: uint) -> string {
+    with {
+        let (l, p) <- s;
+        let ps <- word_split(p, len);
+    } do {
+        let out <- (l - len, ps.1);
+    }
+    return out;
+}
+
+fun prefix(s: string, len: uint) -> string {
+    with {
+        let p <- s.2;
+        let ps <- word_split(p, len);
+    } do {
+        let out <- (len, ps.2);
+    }
+    return out;
+}
+
+fun concat(s1: string, s2: string) -> string {
+    with {
+        let (l1, w1) <- s1;
+        let (l2, w2) <- s2;
+        let w <- word_concat(w1, l1, w2);
+    } do {
+        let out <- (l1 + l2, w);
+    }
+    return out;
+}
+
+fun get(s: string, i: uint) -> bool {
+    with {
+        let p <- s.2;
+    } do {
+        let out <- word_get(p, i);
+    }
+    return out;
+}
+
+fun is_prefix_helper[n](s1: string, s2: string, i: uint) -> bool {
+    with {
+        let end <- s1.1 == i;
+    } do if end {
+        /* If we have reached the end of s1, we are done */
+        let out <- true;
+    } else with {
+        /* Does s1[i] == s2[i]? */
+        let b1 <- get(s1, i);
+        let b2 <- get(s2, i);
+        let eq <- b1 == b2;
+        let j <- i + 1;
+    } do if eq {
+        /* If so, keep going */
+        let out <- is_prefix_helper[n-1](s1, s2, j);
+    } else {
+        /* Otherwise, return false */
+        let out <- false;
+    }
+    return out;
+}
+
+/* Return whether s1 is a prefix of s2. Requires len(s1) <= len(s2). */
+fun is_prefix[n](s1: string, s2: string) -> bool {
+    let out <- is_prefix_helper[n](s1, s2, 0);
+    return out;
+}
+
+fun num_matching_helper[n](s1: string, s2: string, i: uint) -> uint {
+    with {
+        let j <- i + 1;
+        let exceeds <- j == s1.1 || j == s2.1;
+    } do if exceeds {
+        /* Reached end */
+        let out <- i + 1;
+    } else {
+        with {
+            /* Check a character */
+            let b1 <- get(s1, j);
+            let b2 <- get(s2, j);
+            let eq <- b1 == b2;
+        } do if eq {
+            let out <- num_matching_helper[n-1](s1, s2, j);
+        } else {
+            /* This is final matching character */
+            let out <- i + 1;
+        }
+    }
+    return out;
+}
+
+/* Return the number of characters in the matching prefix of s1 and s2 */
+fun num_matching[n](s1: string, s2: string) -> uint {
+    with {
+        /* If either empty, return 0 */
+        let empty <- s1.1 == 0 || s2.1 == 0;
+    } do if empty {
+        let out <- 0;
+    } else with {
+        /* If first char does not match, return 0 */
+        let b1 <- get(s1, 0);
+        let b2 <- get(s2, 0);
+        let eq <- b1 == b2;
+    } do if eq {
+        /* Check remainder */
+        let out <- num_matching_helper[n](s1, s2, 0);
+    } else {
+        let out <- 0;
+    }
+    return out;
+}
+
+fun string_equal(s1: string, s2: string) -> bool {
+    with {
+        let (l1, p1) <- s1;
+        let (l2, p2) <- s2;
+    } do {
+        let out <- l1 == l2 && p1 == p2;
+    }
+    return out;
+}
+
+fun to_str(n: uint, k: uint) -> string {
+    let out <- (n, k);
+    return out;
+}
+
+fun compare_helper[n](s1: string, s2: string, i: uint) -> bool {
+    with {
+        let (l1, w1) <- s1;
+        let exceeds_s1 <- i == l1;
+    } do if exceeds_s1 {
+        let out <- true;
+    } else with {
+        let (l2, w2) <- s2;
+        let exceeds_s2 <- i == l2;
+    } do if exceeds_s2 {
+        let out <- false;
+    } else with {
+        let b1 <- word_get(w1, i);
+        let b2 <- word_get(w2, i);
+        let eq <- b1 == b2;
+        let j <- i + 1;
+    } do if eq {
+        let out <- compare_helper[n-1](s1, s2, j);
+    } else {
+        let out <- b1 <= b2;
+    }
+    return out;
+}
+
+fun compare[n](s1: string, s2: string) -> bool {
+    let out <- compare_helper[n](s1, s2, 0);
+    return out;
+}

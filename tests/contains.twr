@@ -1,0 +1,22 @@
+/* Returns whether l contains k */
+fun contains[n](l: ptr<list>, k: uint) -> bool {
+    with {
+        let l_empty <- l == null;
+    } do if l_empty {
+        /* Empty list contains nothing */
+        let out <- false;
+    } else with {
+        /* Get the current node */
+        let n <- default<list>;
+        *l <-> n;
+        let (this_k, next) <- n;
+    } do with {
+        /* Did we find k? */
+        let eq <- this_k == k;
+    } do if eq {
+        let out <- true;
+    } else {
+        let out <- contains[n-1](next, k);
+    }
+    return out;
+}

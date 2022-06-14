@@ -1,0 +1,17 @@
+fun main() -> unit {
+    with {
+        let l <- null;
+    } do {
+        let () <- push_front(l, 3);
+        let () <- push_front(l, 5);
+        let () <- push_front(l, 7);
+        let () <- push_front(l, 7);
+        let () <- push_front(l, 7);
+        let 3 <- remove[10](l, 5);
+        let 3 <- remove[10](l, 3);
+        let 0 <- remove[10](l, 7);
+        let 0 <- remove[10](l, 7);
+        let 7 <- pop_front(l);
+    }
+    return ();
+}

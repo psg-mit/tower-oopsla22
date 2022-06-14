@@ -1,0 +1,22 @@
+fun main() -> unit {
+    with {
+        let l <- null;
+    } do {
+        let () <- push_front(l, 3);
+        let () <- push_front(l, 5);
+        let 1 <- find_pos[10](l, 3);
+        let () <- push_front(l, 7);
+        let () <- push_front(l, 7);
+        let () <- push_front(l, 7);
+        let 3 <- find_pos[10](l, 5);
+        let 4 <- find_pos[10](l, 3);
+        let 0 <- find_pos[10](l, 7);
+        let 0 <- find_pos[10](l, 7);
+        let 7 <- pop_front(l);
+        let 7 <- pop_front(l);
+        let 7 <- pop_front(l);
+        let 5 <- pop_front(l);
+        let 3 <- pop_front(l);
+    }
+    return ();
+}

@@ -1,0 +1,22 @@
+fun find_pos_helper[n](l: ptr<list>, k: uint, acc: uint) -> uint {
+    with {
+        /* Get the current node */
+        let n <- default<list>;
+        *l <-> n;
+        let (this_k, next) <- n;
+        /* Did we find k? */
+        let eq <- this_k == k;
+        let r <- acc + 1;
+    } do if eq {
+        let out <- acc;
+    } else {
+        let out <- find_pos_helper[n-1](next, k, r);
+    }
+    return out;
+}
+
+/* Find position of k in l. Requires k to be in l. */
+fun find_pos[n](l: ptr<list>, k: uint) -> uint {
+    let out <- find_pos_helper[n](l, k, 0);
+    return out;
+}

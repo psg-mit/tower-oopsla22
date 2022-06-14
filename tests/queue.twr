@@ -1,0 +1,34 @@
+/* Remove front of xs */
+fun pop_front(l: ptr<list>) -> uint {
+    let node <- default<list>;
+    *l <-> node;
+    let (x, tail) <- node;
+    let node -> (x, tail);
+    l <-> tail;
+    let tail -> alloc<list>;
+    return x;
+}
+
+/* Add x to xs */
+fun push_back[n](xs: ptr<list>, x: uint) -> unit {
+    let xs_null <- test xs;
+    if xs_null {
+        let head <- alloc<list>;
+        xs <-> head;
+        let head -> null;
+        let node <- (x, null);
+    } else {
+        let node <- default<list>;
+        *xs <-> node;
+        with {
+            let (h, tail) <- node;
+            let node -> (h, tail);
+        } do {
+            let () <- push_back[n-1](tail, x);
+        }
+    }
+    let xs_null -> node.2 == null;
+    *xs <-> node;
+    let node -> default<list>;
+    return ();
+}

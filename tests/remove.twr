@@ -1,0 +1,45 @@
+fun remove_helper[n](l: ptr<list>, k: uint, pos: uint) -> uint {
+    /* Get the current node */
+    let n <- default<list>;
+    *l <-> n;
+    let (this_k, next) <- n;
+    let n -> (this_k, next);
+
+    with {
+        /* Did we find k? */
+        let eq <- this_k == k;
+        let r <- pos + 1;
+    } do if eq {
+        let out <- pos;
+        /* Deallocate this node */
+        l <-> next;
+        let next -> alloc<list>;
+    } else {
+        let out <- remove_helper[n-1](next, k, r);
+        /* Store the result in l */
+        let n <- (this_k, next);
+        let next -> n.2;
+        *l <-> n;
+        let n -> (0, null);
+    }
+
+    with {
+        /* this_k = k if out stores the current pos,
+        * or is at the head of l otherwise */
+        let eq2 <- out == pos;
+    } do if eq2 {
+        let this_k -> k;
+    } else with {
+        let n <- (0, null);
+        *l <-> n;
+    } do {
+        let this_k -> n.1;
+    }
+    return out;
+}
+
+/* Remove k from l and return its position. Requires k to be in l. */
+fun remove[n](l: ptr<list>, k: uint) -> uint {
+    let out <- remove_helper[n](l, k, 0);
+    return out;
+}

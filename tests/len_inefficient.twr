@@ -1,0 +1,17 @@
+/* Inefficient implementation of len that takes exponential time */
+fun len[n](xs: ptr<list>) -> uint {
+    with {
+        let xs_null <- xs == null;
+    } do if xs_null {
+        let out <- 0;
+    } else with {
+        let temp <- default<list>;
+        *xs <-> temp;
+        let next <- temp.2;
+        /* Recursive call is doubled */
+        let r <- len[n-1](next);
+    } do {
+        let out <- r + 1;
+    }
+    return out;
+}

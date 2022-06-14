@@ -1,0 +1,48 @@
+fun main() -> unit {
+    with {
+        let x <- 0b10011011;
+        let s <- to_str(8, x);
+        let x2 <- 0b1011;
+        let s2 <- to_str(4, x2);
+        let x3 <- 0b1010;
+        let s3 <- to_str(4, x3);
+        let x4 <- 0b00000011;
+        let s4 <- to_str(4, x4);
+    } do {
+        let 8 <- len(s);
+
+        let true <- get(s, 0);
+        let true <- get(s, 1);
+        let false <- get(s, 2);
+        let false <- get(s, 6);
+        let true <- get(s, 7);
+
+        let ((8, 0b10011011), (0, 0)) <- split(s, 0);
+        let ((7, 0b1001101), (1, 0b1)) <- split(s, 1);
+        let ((4, 0b1001), (4, 0b1011)) <- split(s, 4);
+
+        let true <- is_prefix[10](s2, s);
+        let 4 <- num_matching[10](s2, s);
+        let false <- is_prefix[10](s3, s);
+        let 0 <- num_matching[10](s3, s);
+
+        let true <- string_equal(s3, s3);
+        let true <- string_equal(s2, s2);
+        let false <- string_equal(s3, s2);
+        let false <- string_equal(s2, s);
+        let false <- is_prefix[10](s4, s);
+        let 3 <- num_matching[10](s4, s);
+    }
+
+    with {
+        let z1 <- 0b1001;
+        let s1 <- to_str(4, z1);
+        let z2 <- 0b111;
+        let s2 <- to_str(3, z2);
+    } do {
+        let (7, 0b1111001) <- concat(s1, s2);
+        let true <- compare[10](s1, s2);
+        let false <- compare[10](s2, s1);
+    }
+    return ();
+}

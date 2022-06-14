@@ -1,0 +1,86 @@
+/* A hash table chain stores key, value, next */
+type chain = (uint, uint, ptr<chain>);
+/* A hash table is an array of chains */
+type table = ptr<ptr<chain>>;
+
+/* Hash function */
+fun hash(x: uint) -> uint {
+    let out <- x land 0b111;
+    return out;
+}
+
+/* Add k, v to chain, returning old value if there was one */
+fun add_helper[n](chain: ptr<chain>, k: uint, v: uint) -> ptr<uint> {
+    let chain_empty <- chain == null;
+    if chain_empty {
+        /* Chain was empty, set chain to new node */
+        let p <- alloc<chain>;
+        let n <- (k, v, null);
+        *p <-> n;
+        let n -> default<chain>;
+        chain <-> p;
+        let p -> null;
+        let out <- null;
+    } else with {
+        /* Get the current node */
+        let n <- default<chain>;
+        *chain <-> n;
+    } do {
+        let (this_k, this_v, next) <- n;
+        let n -> (this_k, this_v, next);
+
+        with {
+            /* Did we find k? */
+            let eq <- this_k == k;
+        } do if eq {
+            /* Found k, set output */
+            let out <- alloc<uint>;
+            *out <-> this_v;
+            let this_v -> 0;
+
+            /* Update value */
+            let n <- (this_k, v, next);
+        } else {
+            /* Recursive call on next */
+            let out <- add_helper[n-1](next, k, v);
+            let n <- (this_k, this_v, next);
+            let this_v -> n.2;
+        }
+
+        /* Uncompute and update chain */
+        let next -> n.3;
+        let this_k -> n.1;
+    }
+
+    /* Chain was empty if the chain is a singleton
+     * and we did not just replace */
+    with {
+        let n <- default<chain>;
+        *chain <-> n;
+    } do {
+        let chain_empty -> n.3 == null && out == null;
+    }
+    return out;
+}
+
+/* Add k, v to table, returning old value if there was one */
+fun add[n](t: table, k: uint, v: uint) -> ptr<uint> {
+    with {
+        let h <- hash(k);
+        let chain <- null;
+        *(t + h) <-> chain;
+    } do {
+        let out <- add_helper[n](chain, k, v);
+    }
+    return out;
+}
+
+/* Returns whether t contains k */
+fun contains[n](t: table, k: uint) -> bool {
+    with {
+        let r <- add[n](t, k, 0);
+    } do {
+        let out <- r != null;
+    }
+    return out;
+}

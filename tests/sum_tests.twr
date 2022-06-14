@@ -1,0 +1,12 @@
+fun main() -> unit {
+    with {
+        let l <- null;
+    } do {
+        let () <- push_front(l, 4);
+        let () <- push_front(l, 7);
+        let 11 <- sum[10](l);
+        let 7 <- pop_front(l);
+        let 4 <- pop_front(l);
+    }
+    return ();
+}

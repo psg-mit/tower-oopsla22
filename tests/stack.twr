@@ -1,0 +1,21 @@
+/* Add x to front of xs */
+fun push_front(xs: ptr<list>, x: uint) -> unit {
+    let head <- alloc<list>;
+    xs <-> head;
+    let node <- (x, head);
+    let head -> node.2;
+    *xs <-> node;
+    let node -> default<list>;
+    return ();
+}
+
+/* Remove front of xs */
+fun pop_front(l: ptr<list>) -> uint {
+    let node <- default<list>;
+    *l <-> node;
+    let (x, tail) <- node;
+    let node -> (x, tail);
+    l <-> tail;
+    let tail -> alloc<list>;
+    return x;
+}

@@ -1,0 +1,20 @@
+type word = uint;
+
+fun word_get(w: word, i: uint) -> bool {
+    let out <- (w land (1 lsl i)) != 0;
+    return out;
+}
+
+fun word_split(w: word, i: uint) -> (word, word) {
+    with {
+        let mask <- (lnot 0) lsl i;
+    } do {
+        let out <- ((w land mask) lsr i, w land (lnot mask));
+    }
+    return out;
+}
+
+fun word_concat(w1: word, i: uint, w2: word) -> word {
+    let out <- w1 lor (w2 lsl i);
+    return out;
+}

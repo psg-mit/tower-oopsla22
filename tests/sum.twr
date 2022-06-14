@@ -1,0 +1,22 @@
+fun sum_helper[n](xs: ptr<list>, acc: uint) -> uint {
+    with {
+        let xs_null <- test xs;
+    } do if xs_null {
+        let out <- acc;
+    } else with {
+        let temp <- default<list>;
+        *xs <-> temp;
+        let (x, next) <- temp;
+        let r <- acc + x;
+        acc <-> r;
+        let r -> acc - x;
+    } do {
+        let out <- sum_helper[n-1](next, acc);
+    }
+    return out;
+}
+
+fun sum[n](xs: ptr<list>) -> uint {
+    let out <- sum_helper[n](xs, 0);
+    return out;
+}

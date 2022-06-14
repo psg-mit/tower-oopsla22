@@ -1,0 +1,20 @@
+fun main() -> unit {
+    with {
+        let x <- 0b10011011;
+        let z1 <- 0b1001;
+        let z2 <- 0b111;
+    } do {
+        let true <- word_get(x, 0);
+        let true <- word_get(x, 1);
+        let false <- word_get(x, 2);
+        let false <- word_get(x, 6);
+        let true <- word_get(x, 7);
+
+        let (0b10011011, 0) <- word_split(x, 0);
+        let (0b1001101, 0b1) <- word_split(x, 1);
+        let (0b1001, 0b1011) <- word_split(x, 4);
+
+        let 0b1111001 <- word_concat(z1, 4, z2);
+    }
+    return ();
+}

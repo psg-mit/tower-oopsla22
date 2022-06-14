@@ -1,0 +1,49 @@
+static s: bool[8] = { false, false, false, false, true, true, true, true };
+static s2: bool[8] = { false, false, true, true, false, true, false, false };
+static s_prefix : bool[5] = { false, false, true, true, false };
+static s_not_prefix : bool[5] = { false, false, false, true, false };
+static s_substring : bool[6] = { true, true, false, true, false, false };
+
+fun main() -> unit {
+    with {
+        let t <- s + 7;
+        let x <- true;
+        *t <-> x;
+    } do {
+        let x -> true;
+        let x <- false;
+    }
+
+    with {
+        let s2s <- (8, s2);
+        let sps <- (5, s_prefix);
+        let snps <- (5, s_not_prefix);
+        let ssubs <- (6, s_substring);
+    } do {
+        let true <- is_prefix[10](sps, s2s);
+        let false <- is_prefix[10](snps, s2s);
+        let true <- string_equal[10](s2s, s2s);
+        let false <- string_equal[10](s2s, ssubs);
+
+        with {
+            let r <- substring(s2s, 2);
+        } do {
+            let true <- string_equal[10](ssubs, r);
+        }
+
+        let 5 <- num_matching[10](s2s, sps);
+        let 2 <- num_matching[10](s2s, snps);
+        let 0 <- num_matching[10](s2s, ssubs);
+        let 8 <- num_matching[10](s2s, s2s);
+
+        with {
+            let s3 <- alloc<bool>;
+            let t <- true;
+            *s3 <-> t;
+            let s3s <- (1, s3);
+        } do {
+            let 1 <- num_matching[10](ssubs, s3s);
+        }
+    }
+    return ();
+}
