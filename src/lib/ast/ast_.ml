@@ -92,6 +92,7 @@ type id_typ =
   { name : id
   ; typ : typ
   }
+[@@deriving show, eq]
 
 type func =
   { name : id
@@ -100,6 +101,7 @@ type func =
   ; result : value * typ
   ; body : stmt
   }
+[@@deriving show, eq]
 
 type static =
   { name : id
@@ -107,8 +109,10 @@ type static =
   ; size : int
   ; values : value list option
   }
+[@@deriving show, eq]
 
 type decl =
   | Dstatic of static
   | Dtype of id_typ
   | Dfunc of func
+[@@deriving show, eq]

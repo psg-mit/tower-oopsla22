@@ -64,7 +64,7 @@ fun add_helper[n](chain: ptr<chain>, k: uint, v: uint) -> ptr<uint> {
 }
 
 /* Add k, v to table, returning old value if there was one */
-fun add[n](t: table, k: uint, v: uint) -> ptr<uint> {
+fun insert[n](t: table, k: uint, v: uint) -> ptr<uint> {
     with {
         let h <- hash(k);
         let chain <- null;
@@ -78,7 +78,7 @@ fun add[n](t: table, k: uint, v: uint) -> ptr<uint> {
 /* Returns whether t contains k */
 fun contains[n](t: table, k: uint) -> bool {
     with {
-        let r <- add[n](t, k, 0);
+        let r <- insert[n](t, k, 0);
     } do {
         let out <- r != null;
     }

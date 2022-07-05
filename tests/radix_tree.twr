@@ -52,9 +52,9 @@ fun should_check_right[n](t: node, k: string) -> bool {
 fun left_substring(t: node, k: string) -> string {
     with {
         let s <- t.1;
-        let l <- len(s);
+        let l <- length(s);
     } do {
-        let out <- substring(k, l);
+        let out <- get_substring(k, l);
     }
     return out;
 }
@@ -62,9 +62,9 @@ fun left_substring(t: node, k: string) -> string {
 fun right_substring(t: node, k: string) -> string {
     with {
         let s <- t.3;
-        let r <- len(s);
+        let r <- length(s);
     } do {
-        let out <- substring(k, r);
+        let out <- get_substring(k, r);
     }
     return out;
 }
@@ -184,7 +184,7 @@ fun insert_here_left[n](t: node, k: string) -> unit {
     with {
         /* has_left is true if the left child does not store k */
         let l <- t.1;
-        let r <- string_equal(l, k);
+        let r <- equal(l, k);
     } do {
         let hl -> not r;
     }
@@ -216,7 +216,7 @@ fun insert_here_right[n](t: node, k: string) -> unit {
     with {
         /* has_right is true if the right child does not store k */
         let l <- t.3;
-        let r <- string_equal(l, k);
+        let r <- equal(l, k);
     } do {
         let hr -> not r;
     }
@@ -239,7 +239,7 @@ fun equal_at_left[n](t: node, k: string) -> bool {
         let h <- has_left(t);
         let s <- t.1;
     } do if h {
-        let out <- string_equal(k, s);
+        let out <- equal(k, s);
     } else {
         let out <- false;
     }
@@ -251,7 +251,7 @@ fun equal_at_right[n](t: node, k: string) -> bool {
         let h <- has_right(t);
         let s <- t.3;
     } do if h {
-        let out <- string_equal(k, s);
+        let out <- equal(k, s);
     } else {
         let out <- false;
     }
@@ -286,12 +286,12 @@ fun split_right[n](t: node, k: string, match: uint) -> unit {
         let (ls, ln, rs, rn) <- n;
         let n -> (ls, ln, rs, rn);
 
-        let pfx <- prefix(rs, match);
-        let new_rs <- substring(rs, match);
+        let pfx <- get_prefix(rs, match);
+        let new_rs <- get_substring(rs, match);
         let rs -> concat(pfx, new_rs);
 
         with {
-            let sfx <- substring(k, match);
+            let sfx <- get_substring(k, match);
         } do {
             let blank <- alloc<node>;
             let c <- compare[n](sfx, new_rs);
@@ -309,7 +309,7 @@ fun split_right[n](t: node, k: string, match: uint) -> unit {
             with {
                 let temp <- n.1;
             } do {
-                let c -> string_equal(sfx, temp);
+                let c -> equal(sfx, temp);
             }
         }
 
@@ -331,12 +331,12 @@ fun split_left[n](t: node, k: string, match: uint) -> unit {
         let (ls, ln, rs, rn) <- n;
         let n -> (ls, ln, rs, rn);
 
-        let pfx <- prefix(ls, match);
-        let new_ls <- substring(ls, match);
+        let pfx <- get_prefix(ls, match);
+        let new_ls <- get_substring(ls, match);
         let ls -> concat(pfx, new_ls);
 
         with {
-            let sfx <- substring(k, match);
+            let sfx <- get_substring(k, match);
         } do {
             let blank <- alloc<node>;
             let c <- compare[n](sfx, new_ls);
@@ -354,7 +354,7 @@ fun split_left[n](t: node, k: string, match: uint) -> unit {
             with {
                 let temp <- n.1;
             } do {
-                let c -> string_equal(sfx, temp);
+                let c -> equal(sfx, temp);
             }
         }
 

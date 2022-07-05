@@ -1,0 +1,370 @@
+List length
+Expected complexity: 34n + 32 qubits, 23n + 3 gates
+n=1 qubits	PASS: actual 66, expected: 66
+n=1 gates	PASS: actual 26, expected: 26
+n=2 qubits	PASS: actual 100, expected: 100
+n=2 gates	PASS: actual 49, expected: 49
+n=3 qubits	PASS: actual 134, expected: 134
+n=3 gates	PASS: actual 72, expected: 72
+n=4 qubits	PASS: actual 168, expected: 168
+n=4 gates	PASS: actual 95, expected: 95
+n=5 qubits	PASS: actual 202, expected: 202
+n=5 gates	PASS: actual 118, expected: 118
+n=6 qubits	PASS: actual 236, expected: 236
+n=6 gates	PASS: actual 141, expected: 141
+n=7 qubits	PASS: actual 270, expected: 270
+n=7 gates	PASS: actual 164, expected: 164
+n=8 qubits	PASS: actual 304, expected: 304
+n=8 gates	PASS: actual 187, expected: 187
+n=9 qubits	PASS: actual 338, expected: 338
+n=9 gates	PASS: actual 210, expected: 210
+n=10 qubits	PASS: actual 372, expected: 372
+n=10 gates	PASS: actual 233, expected: 233
+List sum
+Expected complexity: 34n + 40 qubits, 21n + 3 gates
+n=1 qubits	PASS: actual 74, expected: 74
+n=1 gates	PASS: actual 24, expected: 24
+n=2 qubits	PASS: actual 108, expected: 108
+n=2 gates	PASS: actual 45, expected: 45
+n=3 qubits	PASS: actual 142, expected: 142
+n=3 gates	PASS: actual 66, expected: 66
+n=4 qubits	PASS: actual 176, expected: 176
+n=4 gates	PASS: actual 87, expected: 87
+n=5 qubits	PASS: actual 210, expected: 210
+n=5 gates	PASS: actual 108, expected: 108
+n=6 qubits	PASS: actual 244, expected: 244
+n=6 gates	PASS: actual 129, expected: 129
+n=7 qubits	PASS: actual 278, expected: 278
+n=7 gates	PASS: actual 150, expected: 150
+n=8 qubits	PASS: actual 312, expected: 312
+n=8 gates	PASS: actual 171, expected: 171
+n=9 qubits	PASS: actual 346, expected: 346
+n=9 gates	PASS: actual 192, expected: 192
+n=10 qubits	PASS: actual 380, expected: 380
+n=10 gates	PASS: actual 213, expected: 213
+List find_pos
+Expected complexity: 42n + 31 qubits, 19n + 3 gates
+n=1 qubits	PASS: actual 73, expected: 73
+n=1 gates	PASS: actual 22, expected: 22
+n=2 qubits	PASS: actual 115, expected: 115
+n=2 gates	PASS: actual 41, expected: 41
+n=3 qubits	PASS: actual 157, expected: 157
+n=3 gates	PASS: actual 60, expected: 60
+n=4 qubits	PASS: actual 199, expected: 199
+n=4 gates	PASS: actual 79, expected: 79
+n=5 qubits	PASS: actual 241, expected: 241
+n=5 gates	PASS: actual 98, expected: 98
+n=6 qubits	PASS: actual 283, expected: 283
+n=6 gates	PASS: actual 117, expected: 117
+n=7 qubits	PASS: actual 325, expected: 325
+n=7 gates	PASS: actual 136, expected: 136
+n=8 qubits	PASS: actual 367, expected: 367
+n=8 gates	PASS: actual 155, expected: 155
+n=9 qubits	PASS: actual 409, expected: 409
+n=9 gates	PASS: actual 174, expected: 174
+n=10 qubits	PASS: actual 451, expected: 451
+n=10 gates	PASS: actual 193, expected: 193
+List remove
+Expected complexity: 26n + 56 qubits, 42n + 3 gates
+n=1 qubits	PASS: actual 82, expected: 82
+n=1 gates	PASS: actual 45, expected: 45
+n=2 qubits	PASS: actual 108, expected: 108
+n=2 gates	PASS: actual 87, expected: 87
+n=3 qubits	PASS: actual 134, expected: 134
+n=3 gates	PASS: actual 129, expected: 129
+n=4 qubits	PASS: actual 160, expected: 160
+n=4 gates	PASS: actual 171, expected: 171
+n=5 qubits	PASS: actual 186, expected: 186
+n=5 gates	PASS: actual 213, expected: 213
+n=6 qubits	PASS: actual 212, expected: 212
+n=6 gates	PASS: actual 255, expected: 255
+n=7 qubits	PASS: actual 238, expected: 238
+n=7 gates	PASS: actual 297, expected: 297
+n=8 qubits	PASS: actual 264, expected: 264
+n=8 gates	PASS: actual 339, expected: 339
+n=9 qubits	PASS: actual 290, expected: 290
+n=9 gates	PASS: actual 381, expected: 381
+n=10 qubits	PASS: actual 316, expected: 316
+n=10 gates	PASS: actual 423, expected: 423
+Stack push_front
+Expected complexity: 40 qubits, 4 gates
+n=10 qubits	PASS: actual 40, expected: 40
+n=10 gates	PASS: actual 4, expected: 4
+Stack pop_front
+Expected complexity: 48 qubits, 4 gates
+n=10 qubits	PASS: actual 48, expected: 48
+n=10 gates	PASS: actual 4, expected: 4
+Queue push_back
+Expected complexity: 34n + 32 qubits, 24n gates
+n=1 qubits	PASS: actual 66, expected: 66
+n=1 gates	PASS: actual 24, expected: 24
+n=2 qubits	PASS: actual 100, expected: 100
+n=2 gates	PASS: actual 48, expected: 48
+n=3 qubits	PASS: actual 134, expected: 134
+n=3 gates	PASS: actual 72, expected: 72
+n=4 qubits	PASS: actual 168, expected: 168
+n=4 gates	PASS: actual 96, expected: 96
+n=5 qubits	PASS: actual 202, expected: 202
+n=5 gates	PASS: actual 120, expected: 120
+n=6 qubits	PASS: actual 236, expected: 236
+n=6 gates	PASS: actual 144, expected: 144
+n=7 qubits	PASS: actual 270, expected: 270
+n=7 gates	PASS: actual 168, expected: 168
+n=8 qubits	PASS: actual 304, expected: 304
+n=8 gates	PASS: actual 192, expected: 192
+n=9 qubits	PASS: actual 338, expected: 338
+n=9 gates	PASS: actual 216, expected: 216
+n=10 qubits	PASS: actual 372, expected: 372
+n=10 gates	PASS: actual 240, expected: 240
+Queue pop_front
+Expected complexity: 48 qubits, 4 gates
+n=10 qubits	PASS: actual 48, expected: 48
+n=10 gates	PASS: actual 4, expected: 4
+String is_empty
+Expected complexity: 25 qubits, 3 gates
+n=10 qubits	PASS: actual 25, expected: 25
+n=10 gates	PASS: actual 3, expected: 3
+String length
+Expected complexity: 24 qubits, 1 gate
+n=10 qubits	PASS: actual 24, expected: 24
+n=10 gates	PASS: actual 1, expected: 1
+String get_prefix
+Expected complexity: 11k qubits, 52 gates
+k=4 qubits	PASS: actual 44, expected: 44
+k=4 gates	PASS: actual 52, expected: 52
+k=5 qubits	PASS: actual 55, expected: 55
+k=5 gates	PASS: actual 52, expected: 52
+k=6 qubits	PASS: actual 66, expected: 66
+k=6 gates	PASS: actual 52, expected: 52
+k=7 qubits	PASS: actual 77, expected: 77
+k=7 gates	PASS: actual 52, expected: 52
+k=8 qubits	PASS: actual 88, expected: 88
+k=8 gates	PASS: actual 52, expected: 52
+k=9 qubits	PASS: actual 99, expected: 99
+k=9 gates	PASS: actual 52, expected: 52
+k=10 qubits	PASS: actual 110, expected: 110
+k=10 gates	PASS: actual 52, expected: 52
+k=11 qubits	PASS: actual 121, expected: 121
+k=11 gates	PASS: actual 52, expected: 52
+k=12 qubits	PASS: actual 132, expected: 132
+k=12 gates	PASS: actual 52, expected: 52
+String get_substring
+Expected complexity: 12k qubits, 54 gates
+k=4 qubits	PASS: actual 48, expected: 48
+k=4 gates	PASS: actual 54, expected: 54
+k=5 qubits	PASS: actual 60, expected: 60
+k=5 gates	PASS: actual 54, expected: 54
+k=6 qubits	PASS: actual 72, expected: 72
+k=6 gates	PASS: actual 54, expected: 54
+k=7 qubits	PASS: actual 84, expected: 84
+k=7 gates	PASS: actual 54, expected: 54
+k=8 qubits	PASS: actual 96, expected: 96
+k=8 gates	PASS: actual 54, expected: 54
+k=9 qubits	PASS: actual 108, expected: 108
+k=9 gates	PASS: actual 54, expected: 54
+k=10 qubits	PASS: actual 120, expected: 120
+k=10 gates	PASS: actual 54, expected: 54
+k=11 qubits	PASS: actual 132, expected: 132
+k=11 gates	PASS: actual 54, expected: 54
+k=12 qubits	PASS: actual 144, expected: 144
+k=12 gates	PASS: actual 54, expected: 54
+String get
+Expected complexity: 6k + 1 qubits, 19 gates
+k=4 qubits	PASS: actual 25, expected: 25
+k=4 gates	PASS: actual 19, expected: 19
+k=5 qubits	PASS: actual 31, expected: 31
+k=5 gates	PASS: actual 19, expected: 19
+k=6 qubits	PASS: actual 37, expected: 37
+k=6 gates	PASS: actual 19, expected: 19
+k=7 qubits	PASS: actual 43, expected: 43
+k=7 gates	PASS: actual 19, expected: 19
+k=8 qubits	PASS: actual 49, expected: 49
+k=8 gates	PASS: actual 19, expected: 19
+k=9 qubits	PASS: actual 55, expected: 55
+k=9 gates	PASS: actual 19, expected: 19
+k=10 qubits	PASS: actual 61, expected: 61
+k=10 gates	PASS: actual 19, expected: 19
+k=11 qubits	PASS: actual 67, expected: 67
+k=11 gates	PASS: actual 19, expected: 19
+k=12 qubits	PASS: actual 73, expected: 73
+k=12 gates	PASS: actual 19, expected: 19
+String is_prefix
+Expected complexity: k^2 + 11k qubits, 98k + 3 gates
+k=4 qubits	PASS: actual 60, expected: 60
+k=4 gates	PASS: actual 395, expected: 395
+k=5 qubits	PASS: actual 80, expected: 80
+k=5 gates	PASS: actual 493, expected: 493
+k=6 qubits	PASS: actual 102, expected: 102
+k=6 gates	PASS: actual 591, expected: 591
+k=7 qubits	PASS: actual 126, expected: 126
+k=7 gates	PASS: actual 689, expected: 689
+k=8 qubits	PASS: actual 152, expected: 152
+k=8 gates	PASS: actual 787, expected: 787
+k=9 qubits	PASS: actual 180, expected: 180
+k=9 gates	PASS: actual 885, expected: 885
+k=10 qubits	PASS: actual 210, expected: 210
+k=10 gates	PASS: actual 983, expected: 983
+k=11 qubits	PASS: actual 242, expected: 242
+k=11 gates	PASS: actual 1081, expected: 1081
+k=12 qubits	PASS: actual 276, expected: 276
+k=12 gates	PASS: actual 1179, expected: 1179
+String num_matching
+Expected complexity: k^2 + 13k + 4 qubits, 110k + 127 gates
+k=4 qubits	PASS: actual 72, expected: 72
+k=4 gates	PASS: actual 567, expected: 567
+k=5 qubits	PASS: actual 94, expected: 94
+k=5 gates	PASS: actual 677, expected: 677
+k=6 qubits	PASS: actual 118, expected: 118
+k=6 gates	PASS: actual 787, expected: 787
+k=7 qubits	PASS: actual 144, expected: 144
+k=7 gates	PASS: actual 897, expected: 897
+k=8 qubits	PASS: actual 172, expected: 172
+k=8 gates	PASS: actual 1007, expected: 1007
+k=9 qubits	PASS: actual 202, expected: 202
+k=9 gates	PASS: actual 1117, expected: 1117
+k=10 qubits	PASS: actual 234, expected: 234
+k=10 gates	PASS: actual 1227, expected: 1227
+k=11 qubits	PASS: actual 268, expected: 268
+k=11 gates	PASS: actual 1337, expected: 1337
+k=12 qubits	PASS: actual 304, expected: 304
+k=12 gates	PASS: actual 1447, expected: 1447
+String equal
+Expected complexity: 6k + 3 qubits, 5 gates
+k=4 qubits	PASS: actual 27, expected: 27
+k=4 gates	PASS: actual 5, expected: 5
+k=5 qubits	PASS: actual 33, expected: 33
+k=5 gates	PASS: actual 5, expected: 5
+k=6 qubits	PASS: actual 39, expected: 39
+k=6 gates	PASS: actual 5, expected: 5
+k=7 qubits	PASS: actual 45, expected: 45
+k=7 gates	PASS: actual 5, expected: 5
+k=8 qubits	PASS: actual 51, expected: 51
+k=8 gates	PASS: actual 5, expected: 5
+k=9 qubits	PASS: actual 57, expected: 57
+k=9 gates	PASS: actual 5, expected: 5
+k=10 qubits	PASS: actual 63, expected: 63
+k=10 gates	PASS: actual 5, expected: 5
+k=11 qubits	PASS: actual 69, expected: 69
+k=11 gates	PASS: actual 5, expected: 5
+k=12 qubits	PASS: actual 75, expected: 75
+k=12 gates	PASS: actual 5, expected: 5
+String concat
+Expected complexity: 11k qubits, 8 gates
+k=4 qubits	PASS: actual 44, expected: 44
+k=4 gates	PASS: actual 8, expected: 8
+k=5 qubits	PASS: actual 55, expected: 55
+k=5 gates	PASS: actual 8, expected: 8
+k=6 qubits	PASS: actual 66, expected: 66
+k=6 gates	PASS: actual 8, expected: 8
+k=7 qubits	PASS: actual 77, expected: 77
+k=7 gates	PASS: actual 8, expected: 8
+k=8 qubits	PASS: actual 88, expected: 88
+k=8 gates	PASS: actual 8, expected: 8
+k=9 qubits	PASS: actual 99, expected: 99
+k=9 gates	PASS: actual 8, expected: 8
+k=10 qubits	PASS: actual 110, expected: 110
+k=10 gates	PASS: actual 8, expected: 8
+k=11 qubits	PASS: actual 121, expected: 121
+k=11 gates	PASS: actual 8, expected: 8
+k=12 qubits	PASS: actual 132, expected: 132
+k=12 gates	PASS: actual 8, expected: 8
+String compare
+Expected complexity: 5k^2 + 12k qubits, 108k + 3 gates
+k=4 qubits	PASS: actual 128, expected: 128
+k=4 gates	PASS: actual 435, expected: 435
+k=5 qubits	PASS: actual 185, expected: 185
+k=5 gates	PASS: actual 543, expected: 543
+k=6 qubits	PASS: actual 252, expected: 252
+k=6 gates	PASS: actual 651, expected: 651
+k=7 qubits	PASS: actual 329, expected: 329
+k=7 gates	PASS: actual 759, expected: 759
+k=8 qubits	PASS: actual 416, expected: 416
+k=8 gates	PASS: actual 867, expected: 867
+k=9 qubits	PASS: actual 513, expected: 513
+k=9 gates	PASS: actual 975, expected: 975
+k=10 qubits	PASS: actual 620, expected: 620
+k=10 gates	PASS: actual 1083, expected: 1083
+k=11 qubits	PASS: actual 737, expected: 737
+k=11 gates	PASS: actual 1191, expected: 1191
+k=12 qubits	PASS: actual 864, expected: 864
+k=12 gates	PASS: actual 1299, expected: 1299
+Set (radix tree) insert
+Expected complexity: 13k^2 + 21k + 9 qubits, 1440k^2 + 5056k gates
+k=4 qubits	PASS: actual 301, expected: 301
+k=4 gates	PASS: actual 43264, expected: 43264
+k=5 qubits	PASS: actual 439, expected: 439
+k=5 gates	PASS: actual 61280, expected: 61280
+k=6 qubits	PASS: actual 603, expected: 603
+k=6 gates	PASS: actual 82176, expected: 82176
+k=7 qubits	PASS: actual 793, expected: 793
+k=7 gates	PASS: actual 105952, expected: 105952
+k=8 qubits	PASS: actual 1009, expected: 1009
+k=8 gates	PASS: actual 132608, expected: 132608
+k=9 qubits	PASS: actual 1251, expected: 1251
+k=9 gates	PASS: actual 162144, expected: 162144
+k=10 qubits	PASS: actual 1519, expected: 1519
+k=10 gates	PASS: actual 194560, expected: 194560
+k=11 qubits	PASS: actual 1813, expected: 1813
+k=11 gates	PASS: actual 229856, expected: 229856
+k=12 qubits	PASS: actual 2133, expected: 2133
+k=12 gates	PASS: actual 268032, expected: 268032
+Set (radix tree) contains
+Expected complexity: 17k^2 + 18k + 2 qubits, 784k^2 + 1612k + 1 gates
+k=4 qubits	PASS: actual 346, expected: 346
+k=4 gates	PASS: actual 18993, expected: 18993
+k=5 qubits	PASS: actual 517, expected: 517
+k=5 gates	PASS: actual 27661, expected: 27661
+k=6 qubits	PASS: actual 722, expected: 722
+k=6 gates	PASS: actual 37897, expected: 37897
+k=7 qubits	PASS: actual 961, expected: 961
+k=7 gates	PASS: actual 49701, expected: 49701
+k=8 qubits	PASS: actual 1234, expected: 1234
+k=8 gates	PASS: actual 63073, expected: 63073
+k=9 qubits	PASS: actual 1541, expected: 1541
+k=9 gates	PASS: actual 78013, expected: 78013
+k=10 qubits	PASS: actual 1882, expected: 1882
+k=10 gates	PASS: actual 94521, expected: 94521
+k=11 qubits	PASS: actual 2257, expected: 2257
+k=11 gates	PASS: actual 112597, expected: 112597
+k=12 qubits	PASS: actual 2666, expected: 2666
+k=12 gates	PASS: actual 132241, expected: 132241
+Set (hash table) insert
+Expected complexity: 52n + 72 qubits, 68n + 15 gates
+n=4 qubits	PASS: actual 280, expected: 280
+n=4 gates	PASS: actual 287, expected: 287
+n=5 qubits	PASS: actual 332, expected: 332
+n=5 gates	PASS: actual 355, expected: 355
+n=6 qubits	PASS: actual 384, expected: 384
+n=6 gates	PASS: actual 423, expected: 423
+n=7 qubits	PASS: actual 436, expected: 436
+n=7 gates	PASS: actual 491, expected: 491
+n=8 qubits	PASS: actual 488, expected: 488
+n=8 gates	PASS: actual 559, expected: 559
+n=9 qubits	PASS: actual 540, expected: 540
+n=9 gates	PASS: actual 627, expected: 627
+n=10 qubits	PASS: actual 592, expected: 592
+n=10 gates	PASS: actual 695, expected: 695
+n=11 qubits	PASS: actual 644, expected: 644
+n=11 gates	PASS: actual 763, expected: 763
+n=12 qubits	PASS: actual 696, expected: 696
+n=12 gates	PASS: actual 831, expected: 831
+Set (hash table) contains
+Expected complexity: 52n + 81 qubits, 136n + 39 gates
+n=4 qubits	PASS: actual 289, expected: 289
+n=4 gates	PASS: actual 583, expected: 583
+n=5 qubits	PASS: actual 341, expected: 341
+n=5 gates	PASS: actual 719, expected: 719
+n=6 qubits	PASS: actual 393, expected: 393
+n=6 gates	PASS: actual 855, expected: 855
+n=7 qubits	PASS: actual 445, expected: 445
+n=7 gates	PASS: actual 991, expected: 991
+n=8 qubits	PASS: actual 497, expected: 497
+n=8 gates	PASS: actual 1127, expected: 1127
+n=9 qubits	PASS: actual 549, expected: 549
+n=9 gates	PASS: actual 1263, expected: 1263
+n=10 qubits	PASS: actual 601, expected: 601
+n=10 gates	PASS: actual 1399, expected: 1399
+n=11 qubits	PASS: actual 653, expected: 653
+n=11 gates	PASS: actual 1535, expected: 1535
+n=12 qubits	PASS: actual 705, expected: 705
+n=12 gates	PASS: actual 1671, expected: 1671

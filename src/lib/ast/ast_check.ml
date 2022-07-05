@@ -1,4 +1,5 @@
 open Core
+module Ast = Ast_
 open Ast
 module IdMap = Symbol.Map
 module IdSet = Symbol.Set
@@ -11,7 +12,7 @@ module Context = struct
     }
 
   type t =
-    { type_aliases : typ IdMap.t
+    { type_aliases : Ast.typ IdMap.t
     ; funcs : func IdMap.t
     ; statics : typ IdMap.t
     ; locals : typ IdMap.t
@@ -26,11 +27,19 @@ module Context = struct
     ; bound_var = None
     }
   ;;
+
+  let add_type ctx key data =
+    match IdMap.add ctx.type_aliases ~key ~data with
+    | `Ok ctx -> Some ctx
+    | _ -> None
+  ;;
+
+  let get_type ctx key = IdMap.find ctx.type_aliases key
 end
 
 let rec normalize_type (ctx : Context.t) = function
   | Tvar t ->
-    (match IdMap.find ctx.type_aliases t with
+    (match Context.get_type ctx t with
     | Some t' -> normalize_type ctx t'
     | None -> Errors.unknown_type_identifier t)
   | Tunit -> Tunit
@@ -75,6 +84,14 @@ let rec synth_value' (ctx : Context.t) = function
   | Vprod vs -> Tprod (List.map ~f:(synth_value ctx) vs)
 
 and synth_value ctx v = synth_value' ctx v |> normalize_type ctx
+
+let check_dups args f =
+  (List.fold args ~init:IdSet.empty ~f:(fun acc -> function
+     | Vvar v -> if IdSet.mem acc v then Errors.dup_arg f v else IdSet.add acc v
+     | _ -> acc)
+    : IdSet.t)
+  |> ignore
+;;
 
 let check_args_match ctx args (arg_types : (id * typ) list) f =
   match
@@ -123,6 +140,10 @@ let rec synth_exp' (ctx : Context.t) = function
       | true, Some (Ovar b | Ominus (b, _)), _ -> Errors.unknown_identifier b
       | true, Some (Oconst _), _ -> ()
       | true, None, _ -> Errors.missing_bound name);
+      List.iter args ~f:(function
+          | Vprod vs -> Errors.func_on_tuple name (Vprod vs)
+          | _ -> ());
+      check_dups args name;
       let args = List.map ~f:(synth_value ctx) args in
       check_args_match ctx args arg_types name;
       result_type)
@@ -181,7 +202,7 @@ let rec reverse (stmt : stmt) : stmt =
 ;;
 
 let rec check_stmt (ctx : Context.t) = function
-  | Sseq ss -> List.fold_left ss ~init:ctx ~f:check_stmt
+  | Sseq ss -> List.fold ss ~init:ctx ~f:check_stmt
   | Sassign (pat, e) ->
     let t = synth_exp ctx e in
     check_pat true ctx pat t
@@ -247,7 +268,7 @@ let rec check_bound (f : Ast.func) = function
 
 let check_func (ctx : Context.t) (f : Ast.func) =
   let locals =
-    List.fold_left f.args ~init:ctx.locals ~f:(fun locals arg ->
+    List.fold f.args ~init:ctx.locals ~f:(fun locals arg ->
         match IdMap.add locals ~key:arg.name ~data:arg.typ with
         | `Ok m -> m
         | _ -> Errors.identifier_already_bound arg.name)
@@ -284,7 +305,7 @@ let check_func (ctx : Context.t) (f : Ast.func) =
 let rec check_type_decl ?(under_ptr = false) ctx i = function
   | Tvar v when equal_id v i -> if under_ptr then Tvar v else Errors.infinite_type v
   | Tvar v ->
-    (match IdMap.find ctx v with
+    (match Context.get_type ctx v with
     | Some t -> t
     | None -> Errors.unknown_type_identifier v)
   | Tunit -> Tunit
@@ -300,13 +321,13 @@ let rec check_type_decl ?(under_ptr = false) ctx i = function
 ;;
 
 let check_decls ?(init = Context.empty) (decls : Ast.decl list) =
-  List.fold_left decls ~init ~f:(fun ctx decl ->
+  List.fold decls ~init ~f:(fun ctx decl ->
       match decl with
       | Dtype { name = key; typ } ->
-        let data = check_type_decl ctx.type_aliases key typ in
+        let data = check_type_decl ctx key typ in
         let type_aliases =
-          match IdMap.add ctx.type_aliases ~key ~data with
-          | `Ok m -> m
+          match Context.add_type ctx key data with
+          | Some m -> m
           | _ -> Errors.identifier_already_bound key
         in
         { ctx with type_aliases }

@@ -1,3 +1,6 @@
+module Ast := Ast_
+module Ir := Ir_
+
 val verbose : bool ref
 
 (* Static errors *)
@@ -34,6 +37,8 @@ val mem_swap_type : Ast.exp -> Ast.typ -> Ast.id -> Ast.typ -> 'a
 val mem_swap_not_ptr : Ast.exp -> Ast.typ -> 'a
 val if_type : Ast.id -> Ast.typ -> 'a
 val pattern_mismatch : Ast.pat -> Ast.typ -> 'a
+val func_on_tuple : Ast.id -> Ast.value -> 'a
+val dup_arg : Ast.id -> Ast.id -> 'a
 
 (* Runtime errors *)
 type state_dumper = unit -> unit

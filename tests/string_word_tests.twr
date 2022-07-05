@@ -8,8 +8,10 @@ fun main() -> unit {
         let s3 <- to_str(4, x3);
         let x4 <- 0b00000011;
         let s4 <- to_str(4, x4);
+        let s22 <- s2;
+        let s32 <- s3;
     } do {
-        let 8 <- len(s);
+        let 8 <- length(s);
 
         let true <- get(s, 0);
         let true <- get(s, 1);
@@ -26,10 +28,10 @@ fun main() -> unit {
         let false <- is_prefix[10](s3, s);
         let 0 <- num_matching[10](s3, s);
 
-        let true <- string_equal(s3, s3);
-        let true <- string_equal(s2, s2);
-        let false <- string_equal(s3, s2);
-        let false <- string_equal(s2, s);
+        let true <- equal(s3, s32);
+        let true <- equal(s2, s22);
+        let false <- equal(s3, s2);
+        let false <- equal(s2, s);
         let false <- is_prefix[10](s4, s);
         let 3 <- num_matching[10](s4, s);
     }

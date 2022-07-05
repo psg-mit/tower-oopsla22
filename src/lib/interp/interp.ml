@@ -1,5 +1,4 @@
 open Core
-open Ir
 module IdTable = Symbol.Table
 
 exception OutOfMemory
@@ -14,8 +13,8 @@ module State = struct
     ; mem_size : int
     ; bounds : int IdTable.t
     ; funcs : Ir.func IdTable.t
-    ; ctx : Check.Context.t
-    ; frame : (bool * id) list
+    ; ctx : Ast.Check.Context.t
+    ; frame : (bool * Ir.id) list
     ; word_size : int
     }
 
@@ -23,15 +22,15 @@ module State = struct
     { reg = IdTable.create ()
     ; mem =
         Array.init mem_size ~f:(fun i ->
-            if i = mem_size - 1 then Vnull else Vptr (Tunit, i + 1))
-    ; static = Array.create ~len:0 (Vnum 0)
+            if i = mem_size - 1 then Ir.Vnull else Vptr (Tunit, i + 1))
+    ; static = Array.create ~len:0 (Ir.Vnum 0)
     ; heap = ref 0
     ; mem_size
     ; bounds = IdTable.create ()
     ; funcs = IdTable.create ()
     ; ctx
     ; frame = []
-    ; word_size = 8
+    ; word_size = !Args.word_size
     }
   ;;
 
@@ -56,13 +55,13 @@ module State = struct
     let to_set m =
       m
       |> Array.filter_map ~f:(function
-             | Vptr (Tunit, i) -> Some i
+             | Ir.Vptr (Tunit, i) -> Some i
              | _ -> None)
       |> Int.Set.of_array
     in
     let initial_mem = Int.Set.add (to_set initial.mem) !(initial.heap) in
     let final_mem = Int.Set.add (to_set state.mem) !(state.heap) in
-    Int.Set.equal initial_mem final_mem && Array.mem ~equal:equal_value state.mem Vnull
+    Int.Set.equal initial_mem final_mem && Array.mem ~equal:Ir.equal_value state.mem Vnull
   ;;
 
   let show_static state =
@@ -120,22 +119,18 @@ module State = struct
   let alloc state typ =
     let p = !(state.heap) in
     let v = state.mem.(p) in
-    state.mem.(p) <- Ir_lower.default (Check.normalize_type state.ctx typ);
+    state.mem.(p) <- Ir.Lower.default (Ast.Check.normalize_type state.ctx typ);
     (match v with
     | Vptr (_, v) -> state.heap := v
     | _ -> raise OutOfMemory);
-    Vptr (typ, p)
+    Ir.Vptr (typ, p)
   ;;
 
-  let alloc_static state len typ values =
-    let a =
-      match values with
-      | Some vs -> List.to_array vs
-      | None -> Array.create ~len (Ir_lower.default typ)
-    in
+  let alloc_static state typ values =
+    let a = List.to_array values in
     let p = Array.length state.static in
     state.static <- Array.append state.static a;
-    Vptr (typ, p + state.mem_size)
+    Ir.Vptr (typ, p + state.mem_size)
   ;;
 
   let dealloc state p =
@@ -145,14 +140,14 @@ module State = struct
 end
 
 let rec resolve_value (state : State.t) = function
-  | Vvar v -> State.get_reg state v
+  | Ir.Vvar v -> State.get_reg state v
   | Vprod vs -> Vprod (List.map ~f:(resolve_value state) vs)
   | v -> v
 ;;
 
 let eval_exp (state : State.t) e =
   match e with
-  | Eval v -> resolve_value state v
+  | Ir.Eval v -> resolve_value state v
   | Eproj (x, i) ->
     (match State.get_reg state x with
     | Vprod vs -> List.nth_exn vs i
@@ -219,20 +214,19 @@ let resolve_bound state =
 
 let try_dealloc state x p typ =
   let v = State.get_mem state p in
-  let expected = Ir_lower.default typ in
-  if not (equal_value v expected)
+  let expected = Ir.Lower.default typ in
+  if not (Ir.equal_value v expected)
   then Errors.unassign_deallocate_error x (Ealloc typ) expected v (State.dump state);
   State.del_reg state x;
   State.dealloc state p
 ;;
 
-let check_regs_cleared (state : State.t) func =
+let check_regs_cleared (state : State.t) (func : Ir.func) =
   let module IdSet = Int.Set in
   let rec returned v =
     match v with
-    | Vvar i -> IdSet.singleton i
-    | Vprod vs ->
-      vs |> List.map ~f:returned |> List.fold_left ~init:IdSet.empty ~f:IdSet.union
+    | Ir.Vvar i -> IdSet.singleton i
+    | Vprod vs -> vs |> List.map ~f:returned |> List.fold ~init:IdSet.empty ~f:IdSet.union
     | _ -> IdSet.empty
   in
   let remaining = state.reg |> IdTable.keys |> IdSet.of_list in
@@ -271,7 +265,7 @@ let rec invoke (state : State.t) x args (func : Ir.func) forward =
       match v with
       | Vvar v -> State.set_reg state v v'
       | v ->
-        if not (equal_value v v')
+        if not (Ir.equal_value v v')
         then Errors.call_modified_error arg.name func.name v v' (State.dump state))
 
 and call_func (state : State.t) x (f : Ir.call) forward =
@@ -285,7 +279,7 @@ and call_func (state : State.t) x (f : Ir.call) forward =
       State.set_reg
         state
         x
-        (Ir_lower.default (Check.normalize_type state.ctx func.result.typ))
+        (Ir.Lower.default (Ast.Check.normalize_type state.ctx func.result.typ))
     | Some n ->
       let bound_var =
         match func.bound with
@@ -307,12 +301,12 @@ and exec_stmt (state : State.t) s =
   | Sassign (x, e) -> State.set_reg state x (eval_exp state e)
   | Sunassign (x, Ealloc typ) ->
     (match State.get_reg state x with
-    | Vptr (_, p) -> try_dealloc state x p (Check.normalize_type state.ctx typ)
+    | Vptr (_, p) -> try_dealloc state x p (Ast.Check.normalize_type state.ctx typ)
     | _ -> assert false)
   | Sunassign (x, e) ->
     let v = State.get_reg state x in
     let v' = eval_exp state e in
-    if not (equal_value v v')
+    if not (Ir.equal_value v v')
     then Errors.unassign_unequal_error x e v v' (State.dump state);
     State.del_reg state x
   | Sswap (x1, x2) ->
@@ -336,13 +330,13 @@ and exec_stmt (state : State.t) s =
     | _ -> assert false)
   | Sdebug -> State.debug state
 
-and unexec_stmt (state : State.t) s = exec_stmt state (Ir_lower.reverse s)
+and unexec_stmt (state : State.t) s = exec_stmt state (Ir.Lower.reverse s)
 
 let interp ~mem_size ctx decls =
   let state = State.init ~mem_size ctx in
   let ret = ref None in
   List.iter decls ~f:(function
-      | Dfunc f ->
+      | Ir.Dfunc f ->
         IdTable.add_exn state.funcs ~key:f.name ~data:f;
         if String.equal (Symbol.name f.name) "main"
         then (
@@ -350,11 +344,12 @@ let interp ~mem_size ctx decls =
           ret := Some (State.get_reg state f.result.name))
       | Dtype _ -> ()
       | Dstatic a ->
-        State.alloc_static
-          state
-          a.size
-          (Check.normalize_type state.ctx a.elt_type)
-          a.values
+        State.alloc_static state (Ast.Check.normalize_type state.ctx a.elt_type) a.values
         |> State.set_reg state a.name);
+  if not (State.check_leaks state)
+  then
+    Format.eprintf
+      "Warning: memory may not have been reset to initial state at program termination.\n"
+  else Format.eprintf "Exited normally.\n";
   state, !ret
 ;;

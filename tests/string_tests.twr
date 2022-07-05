@@ -16,25 +16,26 @@ fun main() -> unit {
 
     with {
         let s2s <- (8, s2);
+        let s2s2 <- (8, s2);
         let sps <- (5, s_prefix);
         let snps <- (5, s_not_prefix);
         let ssubs <- (6, s_substring);
     } do {
         let true <- is_prefix[10](sps, s2s);
         let false <- is_prefix[10](snps, s2s);
-        let true <- string_equal[10](s2s, s2s);
-        let false <- string_equal[10](s2s, ssubs);
+        let true <- equal[10](s2s, s2s2);
+        let false <- equal[10](s2s, ssubs);
 
         with {
             let r <- substring(s2s, 2);
         } do {
-            let true <- string_equal[10](ssubs, r);
+            let true <- equal[10](ssubs, r);
         }
 
         let 5 <- num_matching[10](s2s, sps);
         let 2 <- num_matching[10](s2s, snps);
         let 0 <- num_matching[10](s2s, ssubs);
-        let 8 <- num_matching[10](s2s, s2s);
+        let 8 <- num_matching[10](s2s, s2s2);
 
         with {
             let s3 <- alloc<bool>;

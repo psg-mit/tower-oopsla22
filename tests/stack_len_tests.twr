@@ -4,11 +4,11 @@ fun main() -> unit {
     } do {
         let () <- push_front(l, 1);
         let () <- push_front(l, 2);
-        let 2 <- len[10](l);
+        let 2 <- length[10](l);
         let 2 <- pop_front(l);
         let 1 <- pop_front(l);
         let () <- push_front(l, 1);
-        let 1 <- len[10](l);
+        let 1 <- length[10](l);
         let () -> push_front(l, 1);
     }
     return ();

@@ -2,7 +2,7 @@
 
 (library
  (name lib)
-  (modules args ast_ ast_pp ast check errors interp ir_ ir_lower ir_pp ir symbol)
+  (modules alloc args ast_ ast_check ast_pp ast circuit_ circuit_gen circuit_pp circuit_sim circuit codegen errors inline interp ir_ ir_check ir_lower ir_pp ir linear lir_ lir_lower lir_pp lir_sim lir prim_circuit_ prim_circuit prim_pp prim_sim symbol)
   (libraries core)
   (preprocess (pps ppx_deriving.show ppx_deriving.eq ppx_jane))
 )

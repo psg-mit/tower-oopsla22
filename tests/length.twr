@@ -14,7 +14,7 @@ fun len_helper[n](xs: ptr<list>, acc: uint) -> uint {
     return out;
 }
 
-fun len[n](xs: ptr<list>) -> uint {
+fun length[n](xs: ptr<list>) -> uint {
     let out <- len_helper[n](xs, 0);
     return out;
 }

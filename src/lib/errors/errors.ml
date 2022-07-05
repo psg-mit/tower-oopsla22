@@ -1,3 +1,6 @@
+module Ast = Ast_
+module Ir = Ir_
+
 type static_error =
   | UnknownTypeIdentifier of Ast.id
   | UnknownIdentifier of Ast.id
@@ -26,6 +29,8 @@ type static_error =
   | MemSwapType of Ast.exp * Ast.typ * Ast.id * Ast.typ
   | IfType of Ast.id * Ast.typ
   | PatternMismatch of Ast.pat * Ast.typ
+  | FuncOnTuple of Ast.id * Ast.value
+  | DupArg of Ast.id * Ast.id
 
 exception StaticError of static_error
 
@@ -42,9 +47,9 @@ let call_modified_error x f v1 v2 dump =
            "Call to function '%s' with value %s for argument '%s' should not have \
             modified that argument, got value '%s'"
            (Symbol.name f)
-           (Ir.Pp.show_value v1)
+           (Ir_pp.show_value v1)
            (Symbol.name x)
-           (Ir.Pp.show_value v2)
+           (Ir_pp.show_value v2)
        , dump ))
 ;;
 
@@ -55,9 +60,9 @@ let unassign_unequal_error x e v1 v2 dump =
            "Could not uncompute variable '%s' using expression '%s'; expected value \
             '%s', got value '%s'"
            (Symbol.name x)
-           (Ir.Pp.show_exp e)
-           (Ir.Pp.show_value v1)
-           (Ir.Pp.show_value v2)
+           (Ir_pp.show_exp e)
+           (Ir_pp.show_value v1)
+           (Ir_pp.show_value v2)
        , dump ))
 ;;
 
@@ -68,9 +73,9 @@ let unassign_deallocate_error x e v1 v2 dump =
            "Could not deallocate variable '%s' using expression '%s'; expected value \
             '%s', heap contains '%s'"
            (Symbol.name x)
-           (Ir.Pp.show_exp e)
-           (Ir.Pp.show_value v1)
-           (Ir.Pp.show_value v2)
+           (Ir_pp.show_exp e)
+           (Ir_pp.show_value v1)
+           (Ir_pp.show_value v2)
        , dump ))
 ;;
 
@@ -105,8 +110,8 @@ let static_error_name = function
       "Argument type mismatch in function '%s' for argument '%s': expected '%s', got '%s'"
       (Symbol.name f)
       (Symbol.name a)
-      (Ast.Pp.show_typ t)
-      (Ast.Pp.show_typ t')
+      (Ast_pp.show_typ t)
+      (Ast_pp.show_typ t')
   | MismatchedBranches t ->
     Format.sprintf
       "Branches of if-statement mismatched: only one side binds variable '%s'"
@@ -117,8 +122,8 @@ let static_error_name = function
     Format.sprintf
       "Incorrect return type for function '%s': expected '%s', got '%s'"
       (Symbol.name f)
-      (Ast.Pp.show_typ t)
-      (Ast.Pp.show_typ t')
+      (Ast_pp.show_typ t)
+      (Ast_pp.show_typ t')
   | InfiniteType t ->
     Format.sprintf
       "Cannot declare recursive type '%s' without pointer indirection; size would be \
@@ -132,18 +137,18 @@ let static_error_name = function
       "Cannot call function '%s' without decreased bound: got %s"
       (Symbol.name f)
       (match b with
-      | Some b -> "'" ^ Ast.Pp.show_bound b ^ "'"
+      | Some b -> "'" ^ Ast_pp.show_bound b ^ "'"
       | None -> "no bound")
   | MalformedBound (f, b) ->
     Format.sprintf
       "Definition of function '%s' must use variable as bound, got '%s'"
       (Symbol.name f)
-      (Ast.Pp.show_bound b)
+      (Ast_pp.show_bound b)
   | StaticInitType (x, t) ->
     Format.sprintf
       "Could not initialize static variable '%s' using values not of type '%s'"
       (Symbol.name x)
-      (Ast.Pp.show_typ t)
+      (Ast_pp.show_typ t)
   | StaticInitLength (x, n) ->
     Format.sprintf
       "Could not initialize static variable '%s' of using list not of length %d"
@@ -153,50 +158,61 @@ let static_error_name = function
     Format.sprintf
       "Cannot project field %d from incorrect type, got '%s'"
       n
-      (Ast.Pp.show_typ t)
+      (Ast_pp.show_typ t)
   | UnaryOn t ->
-    Format.sprintf "Cannot apply unary operator to type '%s'" (Ast.Pp.show_typ t)
+    Format.sprintf "Cannot apply unary operator to type '%s'" (Ast_pp.show_typ t)
   | BinaryOn (t1, t2) ->
     Format.sprintf
       "Cannot apply binary operator to types '%s', '%s'"
-      (Ast.Pp.show_typ t1)
-      (Ast.Pp.show_typ t2)
+      (Ast_pp.show_typ t1)
+      (Ast_pp.show_typ t2)
   | UnassignType (x, t, t') ->
     Format.sprintf
       "Cannot unassign variable '%s' of type '%s' using expression of different type '%s'"
       (Symbol.name x)
-      (Ast.Pp.show_typ t)
-      (Ast.Pp.show_typ t')
+      (Ast_pp.show_typ t)
+      (Ast_pp.show_typ t')
   | SwapType (x, t, x', t') ->
     Format.sprintf
       "Cannot swap variables '%s' and '%s' of different types '%s' and '%s"
       (Symbol.name x)
       (Symbol.name x')
-      (Ast.Pp.show_typ t)
-      (Ast.Pp.show_typ t')
+      (Ast_pp.show_typ t)
+      (Ast_pp.show_typ t')
   | MemSwapType (e, t, x', t') ->
     Format.sprintf
       "Cannot swap with memory using '%s' pointing to type '%s' and variable '%s' of \
        different type '%s'"
-      (Ast.Pp.show_exp e)
-      (Ast.Pp.show_typ t)
+      (Ast_pp.show_exp e)
+      (Ast_pp.show_typ t)
       (Symbol.name x')
-      (Ast.Pp.show_typ t')
+      (Ast_pp.show_typ t')
   | MemSwapNotPtr (e, t) ->
     Format.sprintf
       "Cannot swap with memory using '%s' of non-pointer type '%s'"
-      (Ast.Pp.show_exp e)
-      (Ast.Pp.show_typ t)
+      (Ast_pp.show_exp e)
+      (Ast_pp.show_typ t)
   | IfType (x, t) ->
     Format.sprintf
       "Condition of if-statement cannot be '%s' of non-Boolean type '%s'"
       (Symbol.name x)
-      (Ast.Pp.show_typ t)
+      (Ast_pp.show_typ t)
   | PatternMismatch (pat, t) ->
     Format.sprintf
       "Cannot bind type '%s' to pattern '%s'"
-      (Ast.Pp.show_typ t)
-      (Ast.Pp.show_pat pat)
+      (Ast_pp.show_typ t)
+      (Ast_pp.show_pat pat)
+  | FuncOnTuple (f, v) ->
+    Format.sprintf
+      "Cannot call function '%s' on tuple '%s', must bind to variable first"
+      (Symbol.name f)
+      (Ast_pp.show_value v)
+  | DupArg (f, v) ->
+    Format.sprintf
+      "Cannot call function '%s' with argument '%s' twice, must bind to different \
+       variable first"
+      (Symbol.name f)
+      (Symbol.name v)
 ;;
 
 let unknown_type_identifier t = raise (StaticError (UnknownTypeIdentifier t))
@@ -228,3 +244,5 @@ let mem_swap_type e t x' t' = raise (StaticError (MemSwapType (e, t, x', t')))
 let mem_swap_not_ptr e t = raise (StaticError (MemSwapNotPtr (e, t)))
 let if_type x t = raise (StaticError (IfType (x, t)))
 let pattern_mismatch pat t = raise (StaticError (PatternMismatch (pat, t)))
+let func_on_tuple f v = raise (StaticError (FuncOnTuple (f, v)))
+let dup_arg f v = raise (StaticError (DupArg (f, v)))

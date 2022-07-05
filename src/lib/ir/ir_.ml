@@ -1,3 +1,5 @@
+module Ast = Ast_
+
 type id = Ast.id [@@deriving show, eq]
 type ptr = int [@@deriving show, eq]
 type typ = Ast.typ [@@deriving show, eq]
@@ -42,7 +44,7 @@ type stmt =
   | Sdebug
 [@@deriving show, eq]
 
-type id_typ = Ast.id_typ
+type id_typ = Ast.id_typ [@@deriving show, eq]
 
 type func =
   { name : id
@@ -51,15 +53,17 @@ type func =
   ; result : id_typ
   ; body : stmt
   }
+[@@deriving show, eq]
 
 type static =
   { name : id
   ; elt_type : typ
-  ; size : int
-  ; values : value list option
+  ; values : value list
   }
+[@@deriving show, eq]
 
 type decl =
   | Dstatic of static
   | Dtype of id_typ
   | Dfunc of func
+[@@deriving show, eq]

@@ -1,11 +1,11 @@
-module IdTable = Symbol.Table
+module IdTable := Symbol.Table
 
 exception OutOfMemory
 
 module State : sig
   type t
 
-  val init : mem_size:int -> Check.Context.t -> t
+  val init : mem_size:int -> Ast.Check.Context.t -> t
   val show_reg : t -> string
   val show_mem : t -> string
   val check_leaks : t -> bool
@@ -20,4 +20,4 @@ val eval_exp : State.t -> Ir.exp -> Ir.value
 val resolve_bound : State.t -> Ast.bound -> int option
 val exec_stmt : State.t -> Ir.stmt -> unit
 val unexec_stmt : State.t -> Ir.stmt -> unit
-val interp : mem_size:int -> Check.Context.t -> Ir.decl list -> State.t * Ir.value option
+val interp : mem_size:int -> Ast.Check.Context.t -> Ir.decl list -> State.t * Ir.value option

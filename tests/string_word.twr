@@ -9,41 +9,41 @@ fun is_empty(s: string) -> bool {
     return out;
 }
 
-fun len(s: string) -> uint {
+fun length(s: string) -> uint {
     let out <- s.1;
     return out;
 }
 
-fun split(s: string, len: uint) -> (string, string) {
+fun split(s: string, length: uint) -> (string, string) {
     with {
         let (l, p) <- s;
     } do {
-        let (p1, p2) <- word_split(p, len);
-        let l1 <- l - len;
+        let (p1, p2) <- word_split(p, length);
+        let l1 <- l - length;
     }
-    let s2 <- (len, p2);
+    let s2 <- (length, p2);
     let p2 -> s2.2;
     let out <- ((l1, p1), s2);
     let ((l1, p1), s2) -> out;
     return out;
 }
 
-fun substring(s: string, len: uint) -> string {
+fun get_substring(s: string, length: uint) -> string {
     with {
         let (l, p) <- s;
-        let ps <- word_split(p, len);
+        let ps <- word_split(p, length);
     } do {
-        let out <- (l - len, ps.1);
+        let out <- (l - length, ps.1);
     }
     return out;
 }
 
-fun prefix(s: string, len: uint) -> string {
+fun get_prefix(s: string, length: uint) -> string {
     with {
         let p <- s.2;
-        let ps <- word_split(p, len);
+        let ps <- word_split(p, length);
     } do {
-        let out <- (len, ps.2);
+        let out <- (length, ps.2);
     }
     return out;
 }
@@ -90,7 +90,7 @@ fun is_prefix_helper[n](s1: string, s2: string, i: uint) -> bool {
     return out;
 }
 
-/* Return whether s1 is a prefix of s2. Requires len(s1) <= len(s2). */
+/* Return whether s1 is a prefix of s2. Requires length(s1) <= length(s2). */
 fun is_prefix[n](s1: string, s2: string) -> bool {
     let out <- is_prefix_helper[n](s1, s2, 0);
     return out;
@@ -140,7 +140,7 @@ fun num_matching[n](s1: string, s2: string) -> uint {
     return out;
 }
 
-fun string_equal(s1: string, s2: string) -> bool {
+fun equal(s1: string, s2: string) -> bool {
     with {
         let (l1, p1) <- s1;
         let (l2, p2) <- s2;

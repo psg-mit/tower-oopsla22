@@ -1,11 +1,8 @@
-(menhir
-  (flags (--explain))
-  (modules parser))
-
-(ocamllex lexer)
+(include_subdirs unqualified)
 
 (executable
- (name main)
+ (name test)
  (libraries core lib)
  (ocamlopt_flags -O3)
  (preprocess (pps ppx_deriving.show ppx_deriving.eq ppx_jane ppx_variants_conv)))
+

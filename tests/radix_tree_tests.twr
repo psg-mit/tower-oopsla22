@@ -13,82 +13,82 @@ fun main() -> unit {
         let tree <- create();
     } do {
         /* Tree is empty */
-        let false <- contains[10](tree, key1s);
-        let false <- contains[10](tree, key2s);
-        let false <- contains[10](tree, key3s);
-        let false <- contains[10](tree, key4s);
+        let false <- contains[5](tree, key1s);
+        let false <- contains[5](tree, key2s);
+        let false <- contains[5](tree, key3s);
+        let false <- contains[5](tree, key4s);
 
         /* Insert key1 */
-        let () <- insert[10](tree, key1s);
+        let () <- insert[5](tree, key1s);
 
         /* Contains key1 */
-        let true <- contains[10](tree, key1s);
-        let false <- contains[10](tree, key2s);
-        let false <- contains[10](tree, key3s);
-        let false <- contains[10](tree, key4s);
+        let true <- contains[5](tree, key1s);
+        let false <- contains[5](tree, key2s);
+        let false <- contains[5](tree, key3s);
+        let false <- contains[5](tree, key4s);
 
         /* Insert key2 */
-        let () <- insert[10](tree, key2s);
+        let () <- insert[5](tree, key2s);
 
         /* Contains key1 and key2 */
-        let true <- contains[10](tree, key1s);
-        let true <- contains[10](tree, key2s);
-        let false <- contains[10](tree, key3s);
-        let false <- contains[10](tree, key4s);
+        let true <- contains[5](tree, key1s);
+        let true <- contains[5](tree, key2s);
+        let false <- contains[5](tree, key3s);
+        let false <- contains[5](tree, key4s);
 
         /* Insert key3 */
-        let () <- insert[10](tree, key3s);
+        let () <- insert[5](tree, key3s);
 
         /* Contains key1, key2, key3 */
-        let true <- contains[10](tree, key1s);
-        let true <- contains[10](tree, key2s);
-        let true <- contains[10](tree, key3s);
-        let false <- contains[10](tree, key4s);
+        let true <- contains[5](tree, key1s);
+        let true <- contains[5](tree, key2s);
+        let true <- contains[5](tree, key3s);
+        let false <- contains[5](tree, key4s);
 
         /* Remove key1 */
-        let () -> insert[10](tree, key1s);
+        let () -> insert[5](tree, key1s);
         /* This removal is out of order and is unsupported by the hash table. */
 
         /* Contains key2, key3 */
-        let false <- contains[10](tree, key1s);
-        let true <- contains[10](tree, key2s);
-        let true <- contains[10](tree, key3s);
-        let false <- contains[10](tree, key4s);
+        let false <- contains[5](tree, key1s);
+        let true <- contains[5](tree, key2s);
+        let true <- contains[5](tree, key3s);
+        let false <- contains[5](tree, key4s);
 
         /* Remove key2 */
-        let () -> insert[10](tree, key2s);
+        let () -> insert[5](tree, key2s);
 
         /* Contains key3 but not key1, key2, or key4 */
-        let false <- contains[10](tree, key1s);
-        let false <- contains[10](tree, key2s);
-        let true <- contains[10](tree, key3s);
-        let false <- contains[10](tree, key4s);
+        let false <- contains[5](tree, key1s);
+        let false <- contains[5](tree, key2s);
+        let true <- contains[5](tree, key3s);
+        let false <- contains[5](tree, key4s);
 
         /* Insert key4 */
-        let () <- insert[10](tree, key4s);
+        let () <- insert[5](tree, key4s);
 
         /* Contains key3 and key4 */
-        let false <- contains[10](tree, key1s);
-        let false <- contains[10](tree, key2s);
-        let true <- contains[10](tree, key3s);
-        let true <- contains[10](tree, key4s);
+        let false <- contains[5](tree, key1s);
+        let false <- contains[5](tree, key2s);
+        let true <- contains[5](tree, key3s);
+        let true <- contains[5](tree, key4s);
 
         /* Remove key3 */
-        let () -> insert[10](tree, key3s);
+        let () -> insert[5](tree, key3s);
 
         /* Contains key4 */
-        let false <- contains[10](tree, key1s);
-        let false <- contains[10](tree, key2s);
-        let false <- contains[10](tree, key3s);
-        let true <- contains[10](tree, key4s);
+        let false <- contains[5](tree, key1s);
+        let false <- contains[5](tree, key2s);
+        let false <- contains[5](tree, key3s);
+        let true <- contains[5](tree, key4s);
 
         /* Remove key4 */
-        let () -> insert[10](tree, key4s);
+        let () -> insert[5](tree, key4s);
 
-        let false <- contains[10](tree, key1s);
-        let false <- contains[10](tree, key2s);
-        let false <- contains[10](tree, key3s);
-        let false <- contains[10](tree, key4s);
+        let false <- contains[5](tree, key1s);
+        let false <- contains[5](tree, key2s);
+        let false <- contains[5](tree, key3s);
+        let false <- contains[5](tree, key4s);
     }
     return ();
 }
