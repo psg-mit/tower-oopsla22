@@ -1,7 +1,7 @@
 # Build with `docker build -t oopsla22-artifact -f tower.dockerfile .`
 # Run with `docker run -it --rm oopsla22-artifact bash`
 
-FROM ocaml/opam:debian-11-ocaml-4.14
+FROM ocaml/opam:debian-11-ocaml-4.13
 USER opam
 
 RUN opam update -q \

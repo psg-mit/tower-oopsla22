@@ -3,7 +3,7 @@
 This artifact is being submitted to support the OOPSLA'22 paper "Tower: Data Structures in Quantum Superposition" by Charles Yuan and Michael Carbin. The artifact contains:
 
 - `README.md`, this document
-- `tower.tgz`, a Docker image containing source code, pre-built binaries, and tests
+- `tower.tgz`, a Docker image containing source code, pre-built binaries, and tests. This file can be downloaded from the [Zenodo](https://zenodo.org/records/6819031) version of this artifact.
 - `tower.dockerfile`, a Dockerfile that generates the above image from scratch
 - The directory `oopsla22-artifact`, a copy of the contents of the Docker image, containing the source code of the Tower language interpreter (`src/`) and the tests (`tests/`)
 
